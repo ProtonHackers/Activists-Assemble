@@ -1,1 +1,1 @@
-# los-altos-hacks
+# Los Altos Hackathon Project

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!-- Copyright IBM Corp. 2015  All Rights Reserved. -->
+<!-- IBM Insights for Twitter Demo App -->
+<html>
+<head>
+	<title>IBM Insights for Twitter Demo App</title>
+	<link rel="shortcut icon" href="twitter_favicon.png" />
+  	<link href='main.css' media='screen' rel='stylesheet' type='text/css'/>
+</head>
+<body>
+<div style="width:100%;">
+	<div class="display_logo">
+		<img src="images/cdetestapp.png"/>
+	</div>
+	<div class="display_search_text">
+		<input id="search_text" type="text" class="search_textbox" onkeydown="if (event.keyCode == 13) { searchEnter() }"/>
+	</div>
+	<div class="display_buttons">
+		<!-- table required for safari windows -->
+		<table>
+			<tr>
+				<td>
+					<input id="search_button" type="button" value="Twitter Search" class="search_button" onclick="searchTweets(searchText())"/>
+				</td>
+				<td>
+					<input type="button" value="Twitter Count" class="search_button" onclick="countTweets(searchText())"/>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div id="display_spinner" class="display_spinner">
+</div>
+<div style="width:100%;">
+	<div id="display_query" class="display_query">
+	</div>
+	<div id="display_count" class="display_count">
+	</div>
+</div>
+<div style="width:100%;">
+	<div id="display_markup" class="center">
+	</div>
+</div>
+<script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="main.js" type="text/javascript"></script>
+</body>
+</html>

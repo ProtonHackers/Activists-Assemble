@@ -8,6 +8,7 @@ public class PointItem {
     public Double x;
     public Double y;
     public String hashTag;
+    public String sentiment;
     public PointItem(){}
     public PointItem(String x,String y){
 

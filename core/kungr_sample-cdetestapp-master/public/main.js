@@ -168,7 +168,9 @@ function showSection(from, to, id) {
 		etolink.css("font-size", "14px");
 	}
 }
-
+function parseData(data) {
+	console.log(data)
+}
 function searchEnter() {
 	if (searchText().trim() != "") {
 		document.getElementById('search_button').click();
@@ -195,6 +197,8 @@ function searchReset() {
 }
 
 function displaySearch(result) {
+	console.log(result);
+	document.write(JSON.stringify(result));
 	if (result.error) {
 		$("#display_query").text("Error: " + result.status_code);
 		$("#display_markup").text(result.error.description);
@@ -239,6 +243,10 @@ function countTweets(term) {
 			}
 		});
 	}
+}
+function getParameters(name){
+    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+        return decodeURIComponent(name[1]);
 }
 
 function searchTweets(term) {

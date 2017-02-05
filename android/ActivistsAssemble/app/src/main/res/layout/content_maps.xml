@@ -1,0 +1,89 @@
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map"
+    android:name="com.google.android.gms.maps.MapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@android:color/white">-->
+
+
+        <!--<EditText-->
+            <!--android:id="@+id/searchAddress"-->
+            <!--android:layout_width="183dp"-->
+            <!--android:layout_height="wrap_content" />-->
+
+        <!--<Button-->
+            <!--android:id="@+id/Bsearch"-->
+            <!--style="?android:attr/buttonStyleSmall"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="right"-->
+            <!--android:onClick="onSearch"-->
+            <!--android:text="@string/Search" />-->
+
+
+    <!--</LinearLayout>-->
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/saveVillageGps"-->
+        <!--style="?android:attr/textAppearanceLarge"-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|left"-->
+        <!--android:layout_marginBottom="20dp"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:clickable="true"-->
+        <!--android:onClick="saveInfo"-->
+        <!--android:src="@android:drawable/ic_menu_save"-->
+        <!--android:tint="@color/white" />-->
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/deleteImage"-->
+        <!--style="?android:attr/textAppearanceLarge"-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|left"-->
+        <!--android:layout_marginBottom="80dp"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:clickable="true"-->
+        <!--android:onClick="callNextActivity"-->
+        <!--android:src="@android:drawable/ic_menu_delete"-->
+        <!--android:tint="@color/white" />-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|right"-->
+        <!--android:layout_marginBottom="20dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:id="@+id/zoomIn"-->
+            <!--style="?android:attr/textAppearanceLarge"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="bottom|center"-->
+            <!--android:layout_marginBottom="20dp"-->
+            <!--android:onClick="zoom"-->
+            <!--android:src="@drawable/basic_zoom"-->
+            <!--android:text="@string/plus"-->
+            <!--android:tint="@color/white" />-->
+
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:id="@+id/zoomOut"-->
+            <!--style="?android:attr/textAppearanceLarge"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="bottom|center"-->
+            <!--android:onClick="zoom"-->
+            <!--android:src="@drawable/zoom_out"-->
+            <!--android:tint="@color/white" />-->
+
+    <!--</LinearLayout>-->
+
+
+</fragment>

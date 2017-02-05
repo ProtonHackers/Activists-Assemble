@@ -12,7 +12,7 @@ function avg(data2d) {
     }
     return [xSum / data2d.length, ySum / data2d.length];
 }
-var fun = "";
+
 function unique(data2d) {
     var uniques = [];
     for (var i = 0; i < data2d.length; i++) {
@@ -39,7 +39,7 @@ function makeEmptyArray(d) {
     }
     return arr;
 }
- val value = "";
+
 /**
  * Takes in array of tweets stored in json and returns
  */
@@ -105,7 +105,7 @@ function cluster(raw, bandwidth) {
             var coord = raw[i]["gnip"]["profileLocations"][0]["geo"]["coordinates"];
             for (j = 0; j < centroids.length; j++) {
                 centroid = centroids[j];
-                if(euclideanDistance(coord[j][0], coord[j][1], centroid[0], centroid[1]) < bandwidth) {
+                if(euclideanDistance(coord[0], coord[1], centroid[0], centroid[1]) < bandwidth) {
                     tweets2d[j].push(raw[i]);
                     break;
                 }

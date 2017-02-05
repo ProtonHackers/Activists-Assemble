@@ -7,11 +7,15 @@
 	<link rel="shortcut icon" href="twitter_favicon.png" />
   	<link href='main.css' media='screen' rel='stylesheet' type='text/css'/>
 </head>
-<body>
+
+<body onload="var val = getParameters('test'); console.log(val);
+
+searchTweets(val);">
 <div style="width:100%;">
 	<div class="display_logo">
 		<img src="images/cdetestapp.png"/>
 	</div>
+
 	<div class="display_search_text">
 		<input id="search_text" type="text" class="search_textbox" onkeydown="if (event.keyCode == 13) { searchEnter() }"/>
 	</div>

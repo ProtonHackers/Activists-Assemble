@@ -11,9 +11,11 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -66,7 +69,30 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setAutoMeasureEnabled(false);
         mRecycler.setLayoutManager(llm);
+        initializeFirebaseQuery("");
+
+        mRecycler.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        closeDialog();
+                    }
+                });
+
+    }
+
+    private void initializeFirebaseQuery(String query) {
+        Query queryFirebase;
+        if (query.equalsIgnoreCase("")) {
+            queryFirebase = FirebaseDatabase.getInstance().getReference().child("village");
+        } else {
+            query = query.substring(0, 1).toUpperCase() + query.substring(1, query.length());
+            queryFirebase = FirebaseDatabase.getInstance().getReference().orderByChild("name")
+                    .startAt(query)
+                    .endAt(query + "\uf8ff");
+        }
         final Query postsQuery = FirebaseDatabase.getInstance().getReference();
+        final String finalQuery = query;
         FirebaseRecyclerAdapter mAdapter =
                 new FirebaseRecyclerAdapter<PointItem, EventViewHolder>
                         (PointItem.class,
@@ -76,9 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     protected void populateViewHolder(final EventViewHolder viewHolder, final PointItem model, final int position) {
-
                         //                        final PointItem item = model.location.get(position);
-                        viewHolder.title.setText("#" + model.hashTag);
                         Geocoder gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
                         List<android.location.Address> addresses = null;
                         try {
@@ -87,12 +111,30 @@ public class MainActivity extends AppCompatActivity {
                             System.out.println("" + e.toString());
                         }
                         if (addresses.size() > 0) {
-                            viewHolder.room.setText(addresses.get(0).getLocality());
+                            viewHolder.room.setText(addresses.get(0).getLocality() + "");
                             System.out.println(addresses.get(0).getLocality());
                         } else {
                             // do your staff
                         }
-//                        viewHolder.room.setText(model.location);
+
+//                        if(finalQuery.equalsIgnoreCase("")|| finalQuery.equalsIgnoreCase(model.hashTag)) {
+                        viewHolder.view.setVisibility(View.VISIBLE);
+                        String sentiment = model.sentiment.toLowerCase();
+                        switch (sentiment){
+                            case "neutral":
+                                viewHolder.sentiment.setText("Sentiment: " + "safe");
+                                break;
+                            case "positive":
+                                viewHolder.sentiment.setText("Sentiment: " + "safe");
+                                break;
+                            case "negative":
+                                viewHolder.sentiment.setText("Sentiment: " + "dangerous");
+                                break;
+                            default:
+                                viewHolder.sentiment.setText("Sentiment: " + "dangerous");
+                                break;
+                        }
+                        viewHolder.title.setText("#" + model.hashTag);
                         View.OnClickListener onClickListener = new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -124,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
                                     .setTimeline(searchTimeline)
                                     .build();
 
-//                            listView.setEmptyView(getView().findViewById(R.id.empty_view));
                             listView.setAdapter(adapter);
                             viewHolder.expanded_layout.setVisibility(View.VISIBLE);
                         } else {
@@ -138,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
                             PreferenceUtils.putBoolean(getApplicationContext(), "plan" + model.hashTag + model.x, true);
                             viewHolder.star.setImageResource(R.drawable.ic_star);
                         }
+
                         viewHolder.star.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -145,58 +187,10 @@ public class MainActivity extends AppCompatActivity {
 //                                notifyDataSetChanged();
                             }
                         });
-//``
+//                        else{viewHolder.view.setVisibility(View.GONE);}
                     }
 
-//                    @Override
-//                    protected void populateViewHolder(EventViewHolder viewHolder, final PointItem model, final int position) {
-////                        final PointItem item = model.location.get(position);
-//                        viewHolder.title.setText("Something");
-////                        viewHolder.room.setText(model.location);
-//                        View.OnClickListener onClickListener = new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-//                                        .edit().putString("MapKey", item.x+","+item.y).apply();
-//
-//                            }
-//                        };
-//                        viewHolder.google_button.setOnClickListener(onClickListener);
-//                        View.OnClickListener viewOnClick = new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                boolean isExpanded = PreferenceUtils.getBoolean(getApplicationContext(),"expanded" + model.location);
-//                                PreferenceUtils.putBoolean(getApplicationContext(),  "expanded" + model.location, !isExpanded);
-//                                notifyItemChanged(position);
-//                            }
-//                        };
-//                        viewHolder.expanded_layout.setOnClickListener(viewOnClick);
-//                        if (PreferenceUtils.getBoolean(getApplicationContext(), "expanded" + model.location)) {
-//                            ListView listView = (ListView) viewHolder.view.findViewById(R.id.twitter_list) ;
-//                            SearchTimeline searchTimeline = new SearchTimeline.Builder()
-//                                    .query("trump")
-//                                    .build();
-//
-//                            final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter.Builder(getApplicationContext())
-//                                    .setTimeline(searchTimeline)
-//                                    .build();
-//
-////                            listView.setEmptyView(getView().findViewById(R.id.empty_view));
-//                            listView.setAdapter(adapter);
-//                            viewHolder.expanded_layout.setVisibility(View.VISIBLE);
-//                        } else {
-//                            viewHolder.expanded_layout.setVisibility(View.GONE);
-//                        }
-//                    }
                 };
-        mRecycler.getViewTreeObserver()
-                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        closeDialog();
-                    }
-                });
-
         mRecycler.setAdapter(mAdapter);
     }
 
@@ -240,11 +234,9 @@ public class MainActivity extends AppCompatActivity {
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this,
                 id,
                 intent, 0);
+        Calendar calendar = Calendar.getInstance();
 //        alarmMgr.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() - timeBefore, alarmIntent);
-        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + 5 * 60 * 1000,
-                5 * 60 * 10000, alarmIntent);
-
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 5 * 60 * 1000, alarmIntent);
     }
 
     private void closeDialog() {
@@ -257,10 +249,32 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    SearchView searchView;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+//        searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+//        ImageView closeButton = (ImageView) searchView.findViewById(R.id.search_close_btn);
+//        closeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                initializeFirebaseQuery("");
+//            }
+//        });
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                initializeFirebaseQuery(query);
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return false;
+//            }
+//        });
         return true;
     }
 
@@ -286,6 +300,9 @@ public class MainActivity extends AppCompatActivity {
         public TextView room;
         @BindView(R.id.expanded_layout)
         public RelativeLayout expanded_layout;
+
+        @BindView(R.id.sentiment)
+        public TextView sentiment;
 
         @BindView(R.id.star)
         ImageView star;

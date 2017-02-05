@@ -1,7 +1,7 @@
 {
-  "name": "CDETestApp",
+  "name": "Activist_Assembler",
   "version": "0.0.1",
-  "description": "A sample nodejs app for using the Twitter CDE Service in Bluemix",
+  "description": "We want to promote activity by getting a list of protests using the twitter api",
   "dependencies": {
     "express": "3.4.7",
     "request": "^2.51.0"

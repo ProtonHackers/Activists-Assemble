@@ -1,0 +1,6 @@
+@import 'extends';
+
+code,
+.base--code {
+  @extend %base--code;
+}

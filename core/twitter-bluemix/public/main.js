@@ -1,11 +1,14 @@
+
+
 var database = firebase.database();
+
 function displaySearch(result) {
     firebase.database().ref().set(JSON.stringify(result));
     console.log(result);
     document.write(JSON.stringify(result));
     console.log(result['tweets']);
 
-    cluster(result['tweets'],2);
+    cluster(result['tweets'], 2);
 }
 
 function getParameters(name) {
@@ -72,16 +75,6 @@ function unique(data2d) {
     return uniques;
 }
 
-function makeEmptyArray(d) {
-    var arr = [];
-    for(var i = 0; i < d; i++) {
-        arr.push([]);
-    }
-    return arr;
-}
-/**
- * Takes in array of tweets stored in json and returns
- */
 function cluster(raw, bandwidth) {
     var data = [];
 
@@ -180,12 +173,7 @@ function cluster(raw, bandwidth) {
             console.log(e);
         }
     }
-    // var newTweets2d = []
-    // for (i = 0; i < tweets2d.length; i++) {
-    //     if (tweets2d[i].length > 10) {
-    //         newTweets2d
-    //     }
-    // }
+
     console.log("tweets");
     console.log(tweets2d);
     console.log("centroids");

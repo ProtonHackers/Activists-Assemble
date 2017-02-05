@@ -32,6 +32,15 @@ function unique(data2d) {
     return uniques;
 }
 
+function makeEmptyArray(d) {
+    var arr = [];
+    for(var i = 0; i < d; i++) {
+        arr.push([]);
+    }
+    return arr;
+}
+
+
 /**
  * Takes in array of tweets stored in json and returns
  */
@@ -90,5 +99,22 @@ function cluster(raw, bandwidth) {
         }
     }
 
-    return centroids;
+    var tweets2d = makeEmptyArray(centroids.length);
+
+    for (i = 0; i < raw.length; i++) {
+        try {
+            var coord = raw[i]["gnip"]["profileLocations"][0]["geo"]["coordinates"];
+            for (j = 0; j < centroids.length; j++) {
+                centroid = centroids[j];
+                if(euclideanDistance(coord[j][0], coord[j][1], centroid[0], centroid[1]) < bandwidth) {
+                    tweets2d[j].push(raw[i]);
+                    break;
+                }
+            }
+
+
+        }
+    }
+
+    return [tweets2d, centroids];
 }

@@ -1,0 +1,23 @@
+//////////////////////////////
+// Remove once Libsass 3.2 is released
+//////////////////////////////
+%base--list {
+  padding-left: 0;
+  margin-left: 0;
+  list-style: none;
+  width: 100%;
+
+  li,
+  .base--li {
+    margin-top: 0rem;
+
+    &::before {
+      padding-right: 0.4em;
+      text-align: right;
+    }
+  }
+}
+
+%base--ul {
+  @include base--list('•');
+}

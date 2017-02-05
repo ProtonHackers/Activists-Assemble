@@ -3,7 +3,6 @@ function displaySearch(result) {
     console.log(result);
     document.write(JSON.stringify(result));
     console.log(result['tweets']);
-
     var tweets = cluster(result['tweets'], 2);
     var val = commonHashtags(tweets[0]);
     var sents = commonSentiments(tweets[0]);
@@ -18,12 +17,40 @@ function displaySearch(result) {
             })
         }
     }
+    cluster(result['tweets'], 2);
+    jQuery.ajax({
+        type: "POST",
+        url: 'your_functions_address.php',
+        dataType: 'json',
+        data: result
+    });
 }
 
 function getParameters(name) {
     if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)'))
             .exec(location.search))
         return decodeURIComponent(name[1]);
+}
+
+function save_content_to_file(content, filename){
+    var dlg = false;
+    with(document){
+        ir=createElement('iframe');
+        ir.id='ifr';
+        ir.location='about.blank';
+        ir.style.display='none';
+        body.appendChild(ir);
+        with(getElementById('ifr').contentWindow.document){
+            open("text/plain", "replace");
+            charset = "utf-8";
+            write(content);
+            close();
+            document.charset = "utf-8";
+            dlg = execCommand('SaveAs', false, filename);
+        }
+        body.removeChild(ir);
+    }
+    return dlg;
 }
 
 window.onload = function () {

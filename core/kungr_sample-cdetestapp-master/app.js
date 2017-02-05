@@ -33,7 +33,7 @@ function insightRequest(path, query, done) {
         method: "GET",
         url: insight_host + '/api/v1/messages' + path,
         qs: {
-            q: query+" posted:2017-02-01",
+            q: query,
             size: MAX_TWEETS
         }
     }, function(err, response, data) {

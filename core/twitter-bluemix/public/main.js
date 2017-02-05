@@ -1,6 +1,7 @@
 function displaySearch(result) {
     console.log(result);
     document.write(JSON.stringify(result));
+    cluster(result['tweets'],1000);
 }
 
 function getParameters(name) {

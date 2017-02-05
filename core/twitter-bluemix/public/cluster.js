@@ -12,7 +12,7 @@ function avg(data2d) {
     }
     return [xSum / data2d.length, ySum / data2d.length];
 }
-
+var fun = "";
 function unique(data2d) {
     var uniques = [];
     for (var i = 0; i < data2d.length; i++) {
@@ -39,8 +39,7 @@ function makeEmptyArray(d) {
     }
     return arr;
 }
-
-
+ val value = "";
 /**
  * Takes in array of tweets stored in json and returns
  */

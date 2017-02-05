@@ -1,14 +1,23 @@
-
-
 var database = firebase.database();
-
 function displaySearch(result) {
-    firebase.database().ref().set(JSON.stringify(result));
     console.log(result);
     document.write(JSON.stringify(result));
     console.log(result['tweets']);
 
-    cluster(result['tweets'], 2);
+    var tweets = cluster(result['tweets'], 2);
+    var val = commonHashtags(tweets[0]);
+    var sents = commonSentiments(tweets[0]);
+    console.log(sents);
+    for (var count = 0; count < val.length; count++) {
+        if ((val[count].length > 3)) {
+            firebase.database().ref("/tweets/locations/" + count).set({
+                "x": tweets[1][count][1],
+                "y": tweets[1][count][0],
+                "hashTag": val[count],
+                "sentiment": sents[count]
+            })
+        }
+    }
 }
 
 function getParameters(name) {
@@ -37,7 +46,7 @@ function searchTweets(term) {
                 displaySearch(data);
             },
             error: function (xhr, textStatus, thrownError) {
-               console.log("error in tweets")
+                console.log("error in tweets")
             }
         });
     }
@@ -75,6 +84,16 @@ function unique(data2d) {
     return uniques;
 }
 
+function makeEmptyArray(d) {
+    var arr = [];
+    for (var i = 0; i < d; i++) {
+        arr.push([]);
+    }
+    return arr;
+}
+/**
+ * Takes in array of tweets stored in json and returns
+ */
 function cluster(raw, bandwidth) {
     var data = [];
 
@@ -150,7 +169,7 @@ function cluster(raw, bandwidth) {
             var centroidIndex = 0;
             for (j = 0; j < centroids.length; j++) {
                 centroid = centroids[j];
-                if(euclideanDistance(coord[0], coord[1], centroid[0], centroid[1]) < minDistance) {
+                if (euclideanDistance(coord[0], coord[1], centroid[0], centroid[1]) < minDistance) {
                     minDistance = euclideanDistance(coord[0], coord[1], centroid[0], centroid[1]);
                     centroidIndex = j;
                     console.log(minDistance)
@@ -173,7 +192,12 @@ function cluster(raw, bandwidth) {
             console.log(e);
         }
     }
-
+    // var newTweets2d = []
+    // for (i = 0; i < tweets2d.length; i++) {
+    //     if (tweets2d[i].length > 10) {
+    //         newTweets2d
+    //     }
+    // }
     console.log("tweets");
     console.log(tweets2d);
     console.log("centroids");
@@ -183,7 +207,7 @@ function cluster(raw, bandwidth) {
 
 function makeEmptyArray(d) {
     var arr = [];
-    for(var i = 0; i < d; i++) {
+    for (var i = 0; i < d; i++) {
         arr.push(0);
     }
     return arr;
@@ -191,14 +215,12 @@ function makeEmptyArray(d) {
 
 function max(hashtags2D) {
     var keys = [];
-    for (var i = 0; i < hashtags2D.length; i++)
-    {
+    for (var i = 0; i < hashtags2D.length; i++) {
         var maxKey = "";
         var numKey = 0;
         for (var key in hashtags2D[i]) {
             if (hashtags2D[i].hasOwnProperty(key)) {
-                if (hashtags2D[i][key] >= numKey)
-                {
+                if (hashtags2D[i][key] >= numKey) {
                     maxKey = key;
                     numKey = hashtags2D[i][key];
                 }
@@ -208,27 +230,29 @@ function max(hashtags2D) {
         keys.push(maxKey);
 
     }
+    console.log("Keys");
+    console.log(keys);
 
     return keys;
 }
 
+
 function commonHashtags(tweets2D) {
     var hashtags = [];
-    for (var i = 0; i < tweets2D.length; i++)
-    {
+    for (var i = 0; i < tweets2D.length; i++) {
         var eventHashtags = [];
-        for (var j = 0; j < tweets2D[i].length; j++)
-        {
-            var hashtagDicts = tweets2D[i][j]["twitter_entities"]["hashtags"];
-            for (var k = 0; k < hashtagDicts.length; k++)
-            {
-                if (eventHashtags[hashtagDicts[k]["text"]] === undefined) {
-                    eventHashtags[hashtagDicts[k]["text"]] = 1;
-                } else {
-                    eventHashtags[hashtagDicts[k]["text"]] += 1;
+        if (tweets2D[i] != undefined) {
+            for (var j = 0; j < tweets2D[i].length; j++) {
+                var hashtagDicts = tweets2D[i][j]['message']["twitter_entities"]["hashtags"];
+                for (var k = 0; k < hashtagDicts.length; k++) {
+                    if (eventHashtags[hashtagDicts[k]["text"]] === undefined) {
+                        eventHashtags[hashtagDicts[k]["text"]] = 1;
+                    } else {
+                        eventHashtags[hashtagDicts[k]["text"]] += 1;
+                    }
                 }
-            }
 
+            }
         }
 
         hashtags.push(eventHashtags);
@@ -237,3 +261,36 @@ function commonHashtags(tweets2D) {
     return max(hashtags);
 
 }
+function commonSentiments(tweets2D) {
+    var sentiments = [];
+    for (var i = 0; i < tweets2D.length; i++) {
+        var eventSentiments = [];
+        if (tweets2D[i] != undefined) {
+            for (var j = 0; j < tweets2D[i].length; j++) {
+                try {
+                    var sentimentString = tweets2D[i][j]['cde']["content"]["sentiment"]['polarity'];
+                    console.log(sentimentString);
+                }
+                catch (e) {
+                    var sentimentString = 'NEUTRAL';
+                    console.log(sentimentString);
+                }
+                if (sentimentString.length < 3) {
+
+                    sentimentString = 'NEUTRAL';
+                }
+
+                sentiments.push(sentimentString);
+
+            }
+
+
+        }
+
+
+    }
+    return sentiments;
+}
+
+
+

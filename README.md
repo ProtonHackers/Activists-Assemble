@@ -1,5 +1,7 @@
 # Activists Assemble
 ### Submitted to Los Altos Hacks II
+Created by Rohan Koodli, Vineet Mudupalli, Vikranth Srivatsa, and Aubhro Sengupta
+
 Winner: Best Android App
 
 Winner: Best Use of IBM Bluemix APIs

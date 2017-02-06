@@ -26,6 +26,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -43,8 +44,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    'com.android.support:support-v13:25.1.0'
-    'com.google.android.gms:play-services-maps:9.4.0'
+    compile 'com.android.support:support-v13:25.1.1'
+    compile 'com.google.android.gms:play-services-maps:10.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
     compile 'com.firebaseui:firebase-ui:1.1.1'
     compile 'com.google.firebase:firebase-auth:10.0.1'

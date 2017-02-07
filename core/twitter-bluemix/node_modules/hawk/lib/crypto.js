@@ -54,19 +54,11 @@ exports.calculateMac = function (type, credentials, options) {
 
 exports.generateNormalizedString = function (type, options) {
 
-    var resource = options.resource || '';
-    if (resource &&
-        resource[0] !== '/') {
-
-        var url = Url.parse(resource, false);
-        resource = url.path;                        // Includes query
-    }
-
     var normalized = 'hawk.' + exports.headerVersion + '.' + type + '\n' +
                      options.ts + '\n' +
                      options.nonce + '\n' +
                      (options.method || '').toUpperCase() + '\n' +
-                     resource + '\n' +
+                     (options.resource || '') + '\n' +
                      options.host.toLowerCase() + '\n' +
                      options.port + '\n' +
                      (options.hash || '') + '\n';
@@ -117,10 +109,3 @@ exports.calculateTsMac = function (ts, credentials) {
     return hmac.digest('base64');
 };
 
-
-exports.timestampMessage = function (credentials, localtimeOffsetMsec) {
-
-    var now = Utils.nowSecs(localtimeOffsetMsec);
-    var tsm = exports.calculateTsMac(now, credentials);
-    return { ts: now, tsm: tsm };
-};

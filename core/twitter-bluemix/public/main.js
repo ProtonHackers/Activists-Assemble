@@ -18,12 +18,6 @@ function displaySearch(result) {
         }
     }
     cluster(result['tweets'], 2);
-    jQuery.ajax({
-        type: "POST",
-        url: 'your_functions_address.php',
-        dataType: 'json',
-        data: result
-    });
 }
 
 function getParameters(name) {

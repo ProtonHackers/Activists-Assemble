@@ -8,8 +8,8 @@ var natural_language_classifier = watson.natural_language_classifier({
 
 natural_language_classifier.classify({
         text: 'BREAKING: Acting Army Secretary notified Congress that ' +
-        '       #DakotaAccessPipeline easement is imminent. ' +
-        '          We must unite with #StandingRock! #NoDAPL ', //real tweet
+        '#DakotaAccessPipeline easement is imminent. ' +
+        'We must unite with #StandingRock! #NoDAPL ', //real tweet
         classifier_id: 'f5bbbbx174-nlc-1387'
 },
     function(err, response) {
